@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Player : CharacterBody3D
 {
@@ -8,10 +9,24 @@ public partial class Player : CharacterBody3D
 	[Export] public float LookSensitivity = 5.0f;
 	
 	[Export] public Camera3D Camera { get; set; }
-	
+
+	[Signal]
+	public delegate void JumpedEventHandler();
+
 	public override void _Ready()
 	{
 		base._Ready();
+
+		PrintAfterJump();
+	}
+	
+	private async void PrintAfterJump()
+	{
+		while (true)
+		{
+			await ToSignal(this, SignalName.Jumped);
+			GD.Print("Jumped!");
+		}
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -29,7 +44,7 @@ public partial class Player : CharacterBody3D
 		{
 			if(@event is InputEventMouseMotion mouseEvent)
 			{
-				var scaledLookSensitivity = LookSensitivity * 0.001f; 
+				var scaledLookSensitivity = LookSensitivity * 0.001f;
 				RotateY(-mouseEvent.Relative.X * scaledLookSensitivity);
 				Camera.RotateX(-mouseEvent.Relative.Y * scaledLookSensitivity);
 				Camera.SetRotation(new Vector3(Math.Clamp(Camera.Rotation.X, Mathf.DegToRad(-90), Mathf.DegToRad(90)),
@@ -52,6 +67,7 @@ public partial class Player : CharacterBody3D
 		if (Input.IsActionJustPressed("jump"))
 		{
 			newVelocity.Y = JumpVelocity;
+			EmitSignal(SignalName.Jumped);
 		}
 
 		// Get the input direction and handle the movement/deceleration.

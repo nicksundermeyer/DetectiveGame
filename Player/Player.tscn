@@ -1,21 +1,14 @@
 [gd_scene format=3 uid="uid://cme4gd2f72dwu"]
 
 [ext_resource type="Script" uid="uid://c6vog6mswno3i" path="res://Player/Player.cs" id="1_3qydi"]
-[ext_resource type="Shader" uid="uid://ei2pra27igdq" path="res://Player/MoebiusShader.gdshader" id="2_q3lat"]
+[ext_resource type="Material" uid="uid://kooyqnqa8ewu" path="res://Shaders/MoebiusShaderMaterial.tres" id="2_tok1r"]
+[ext_resource type="PackedScene" uid="uid://dwtdlevehlsm7" path="res://UI/MainHUD.tscn" id="3_tok1r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q3lat"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3qydi"]
 flip_faces = true
 size = Vector2(2, 2)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tok1r"]
-render_priority = 0
-shader = ExtResource("2_q3lat")
-shader_parameter/edge_color = Color(0, 0, 0, 1)
-shader_parameter/edge_threshold = 0.01
-shader_parameter/noise_frequency = 10.0
-shader_parameter/noise_offset_intensity = 0.002
 
 [node name="Player" type="CharacterBody3D" unique_id=99370383 node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_3qydi")
@@ -33,4 +26,6 @@ current = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Camera" unique_id=1266050345]
 mesh = SubResource("QuadMesh_3qydi")
-surface_material_override/0 = SubResource("ShaderMaterial_tok1r")
+surface_material_override/0 = ExtResource("2_tok1r")
+
+[node name="Control" parent="." unique_id=275686030 instance=ExtResource("3_tok1r")]

@@ -13,7 +13,7 @@ config_version=5
 config/name="DetectiveGame"
 run/main_scene="uid://cgs810wgh6sxm"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://UI/icon.svg"
 
 [dotnet]
 
