@@ -3,16 +3,18 @@
 [ext_resource type="PackedScene" uid="uid://cme4gd2f72dwu" path="res://Player/Player.tscn" id="1_y8pdh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_y8pdh"]
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
 [sub_resource type="Sky" id="Sky_e65p0"]
 sky_material = SubResource("ProceduralSkyMaterial_y8pdh")
 
-[sub_resource type="Environment" id="Environment_oyacf"]
+[sub_resource type="Environment" id="Environment_aj1r1"]
 background_mode = 2
 sky = SubResource("Sky_e65p0")
-ambient_light_source = 3
-ambient_light_color = Color(0, 0.76862746, 0.95686275, 1)
-reflected_light_source = 2
+tonemap_mode = 2
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_oyacf"]
 
@@ -28,8 +30,12 @@ size = Vector3(2, 0.001, 2)
 
 [node name="Node3D" type="Node3D" unique_id=2065766446]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=741301659]
-environment = SubResource("Environment_oyacf")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1024759294]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=56128241]
+environment = SubResource("Environment_aj1r1")
 
 [node name="Box" type="MeshInstance3D" parent="." unique_id=522167925]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5788764, 0)
@@ -44,6 +50,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ic43p")
 [node name="Floor" type="MeshInstance3D" parent="." unique_id=1721727317]
 transform = Transform3D(28.201061, 0, 0, 0, 1, 0, 0, 0, 28.201061, 0.041628838, -1.1086178, -0.41500854)
 mesh = SubResource("PlaneMesh_mf5ip")
+metadata/_edit_lock_ = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor" unique_id=754710532]
 

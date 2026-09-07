@@ -1,0 +1,99 @@
+[gd_resource type="VisualShader" format=3 uid="uid://2niuf32asrho"]
+
+[ext_resource type="Texture2D" uid="uid://b0vh2uwfd03nf" path="res://Assets/MoebiusShader/hatch.png" id="1_y1rlb"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_345x8"]
+output_port_for_preview = 0
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_q33k0"]
+output_port_for_preview = 0
+operator = 3
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_fwvtu"]
+parameter_name = "FloatParameter"
+default_value_enabled = true
+default_value = 4.0
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_38dl7"]
+output_port_for_preview = 0
+default_input_values = [0, 0.5, 1, 0.0]
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_r3v1j"]
+output_port_for_preview = 0
+default_input_values = [0, 0.75, 1, 0.0]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_hmi1f"]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_030i1"]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_ffgp6"]
+output_port_for_preview = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_y1rlb"]
+operator = 6
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_345x8"]
+output_port_for_preview = 0
+operator = 6
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_q33k0"]
+output_port_for_preview = 1
+expanded_output_ports = [0]
+texture = ExtResource("1_y1rlb")
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_5iead"]
+output_port_for_preview = 0
+default_input_values = [0, 1.0, 1, 0.0]
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_vut3l"]
+output_port_for_preview = 0
+function = 31
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_n5hia"]
+output_port_for_preview = 0
+function = 14
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_0ihpk"]
+output_port_for_preview = 0
+default_input_values = [0, 0.0, 1, 4.0]
+operator = 2
+
+[resource]
+nodes/fragment/0/position = Vector2(800, 260)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_q33k0")
+nodes/fragment/3/position = Vector2(-1400, 420)
+nodes/fragment/4/node = SubResource("VisualShaderNodeStep_5iead")
+nodes/fragment/4/position = Vector2(-480, 120)
+nodes/fragment/7/node = SubResource("VisualShaderNodeFloatFunc_vut3l")
+nodes/fragment/7/position = Vector2(-800, 60)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatFunc_n5hia")
+nodes/fragment/8/position = Vector2(-1460, -120)
+nodes/fragment/9/node = SubResource("VisualShaderNodeFloatOp_0ihpk")
+nodes/fragment/9/position = Vector2(-1660, -160)
+nodes/fragment/10/node = SubResource("VisualShaderNodeInput_345x8")
+nodes/fragment/10/position = Vector2(-2060, -120)
+nodes/fragment/11/node = SubResource("VisualShaderNodeFloatOp_q33k0")
+nodes/fragment/11/position = Vector2(-1213.6459, -38.550198)
+nodes/fragment/12/node = SubResource("VisualShaderNodeFloatParameter_fwvtu")
+nodes/fragment/12/position = Vector2(-2020, 220)
+nodes/fragment/13/node = SubResource("VisualShaderNodeStep_38dl7")
+nodes/fragment/13/position = Vector2(-460, 880)
+nodes/fragment/14/node = SubResource("VisualShaderNodeStep_r3v1j")
+nodes/fragment/14/position = Vector2(-480, 480)
+nodes/fragment/15/node = SubResource("VisualShaderNodeFloatOp_hmi1f")
+nodes/fragment/15/position = Vector2(-180, 260)
+nodes/fragment/16/node = SubResource("VisualShaderNodeFloatOp_030i1")
+nodes/fragment/16/position = Vector2(-180, 620)
+nodes/fragment/17/node = SubResource("VisualShaderNodeFloatOp_ffgp6")
+nodes/fragment/17/position = Vector2(-180, 960)
+nodes/fragment/18/node = SubResource("VisualShaderNodeFloatOp_y1rlb")
+nodes/fragment/18/position = Vector2(113.66436, 450.47876)
+nodes/fragment/19/node = SubResource("VisualShaderNodeFloatOp_345x8")
+nodes/fragment/19/position = Vector2(360, 700)
+nodes/fragment/connections = PackedInt32Array(10, 0, 9, 0, 9, 0, 8, 0, 8, 0, 11, 0, 12, 0, 9, 1, 12, 0, 11, 1, 11, 0, 7, 0, 7, 0, 4, 1, 7, 0, 13, 1, 7, 0, 14, 1, 4, 0, 15, 0, 3, 1, 15, 1, 14, 0, 16, 1, 3, 2, 16, 0, 3, 3, 17, 0, 13, 0, 17, 1, 15, 0, 18, 0, 16, 0, 18, 1, 18, 0, 19, 0, 17, 0, 19, 1, 19, 0, 0, 0)
