@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://ds0ewg7u8mge5"]
+
+[ext_resource type="Script" uid="uid://dpmpdilfjkcyt" path="res://Assets/Keypad/Keypad.cs" id="1_hx506"]
+[ext_resource type="PackedScene" uid="uid://2ixsbp2lkoub" path="res://UI/KeypadUI.tscn" id="2_unyhs"]
+[ext_resource type="PackedScene" uid="uid://eoumierj5y0c" path="res://Models/Keypad/Keypad.fbx" id="15_cwx6j"]
+
+[sub_resource type="Curve" id="Curve_unyhs"]
+_data = [Vector2(0, 0), 0.0, 2.3717082, 0, 0, Vector2(0.5012964, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8734362, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gjdnp"]
+size = Vector3(0.32659912, 0.5286865, 0.06555176)
+
+[node name="Keypad" type="Area3D" unique_id=1737249742 node_paths=PackedStringArray("Camera", "KeypadMeshes")]
+script = ExtResource("1_hx506")
+Camera = NodePath("Camera3D")
+KeypadMeshes = NodePath("KeypadMesh")
+KeypadUi = ExtResource("2_unyhs")
+ButtonPressCurve = SubResource("Curve_unyhs")
+metadata/_custom_type_script = "uid://dpmpdilfjkcyt"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1889387451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5351548)
+
+[node name="KeypadMesh" parent="." unique_id=1254638695 instance=ExtResource("15_cwx6j")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1665899972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0018615723, 0.0040893555, 0.0602417)
+shape = SubResource("BoxShape3D_gjdnp")

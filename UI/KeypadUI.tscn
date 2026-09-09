@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://2ixsbp2lkoub"]
+
+[ext_resource type="Texture2D" uid="uid://cdqrk271vo0e0" path="res://UI/cross.png" id="1_los0f"]
+
+[node name="KeypadUI" type="Control" unique_id=964974958]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ExitButton" type="Button" parent="." unique_id=1858975795]
+layout_mode = 0
+offset_left = 805.0
+offset_top = 61.0
+offset_right = 863.0
+offset_bottom = 119.0
+icon = ExtResource("1_los0f")

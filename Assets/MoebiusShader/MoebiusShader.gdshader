@@ -6,15 +6,14 @@ uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear_
 
 // hatching
 uniform sampler2D hatch: filter_nearest,repeat_enable;
-uniform sampler2D hatch1: filter_nearest,repeat_enable;
-uniform sampler2D hatch2: filter_nearest,repeat_enable;
-uniform sampler2D hatch3: filter_nearest,repeat_enable;
-uniform float hatch_uv_scaling: hint_range (0.0, 50.0, 1.0) = 20.0;
+uniform float hatch_uv_scaling: hint_range (0.0, 100.0, 1.0) = 40.0;
 
 // edge lines
 uniform float edge_threshold = 0.2;
+uniform float edge_thickness: hint_range(0.0, 3.0, 0.1) = 0.7;
 uniform vec3 line_color: source_color = vec3(0.0);
-uniform vec3 background_color: source_color = vec3(1.0);
+uniform float lum_contrast: hint_range(0.0, 10.0, 0.1) = 5.0;
+uniform float lum_offset: hint_range(0.0, 1.0, 0.01) = 0.5;
 
 const mat3 sobel_y = mat3(
 	vec3(1.0, 0.0, -1.0),
@@ -32,6 +31,11 @@ vec3 normalize_normal(vec3 normal){
 	return normalize(normal * 2.0 - 1.0);
 }
 
+float luminance(vec3 color) {
+	const vec3 magic = vec3(0.2125, 0.7154, 0.0721);
+	return dot(magic, color);
+}
+
 void vertex(){
 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
@@ -39,7 +43,7 @@ void vertex(){
 void fragment() {
 	vec2 uv = SCREEN_UV;
 	vec3 screen_color = texture(SCREEN_TEXTURE,uv).rgb;
-	vec2 offset = 0.5 / VIEWPORT_SIZE;
+	vec2 offset = edge_thickness / VIEWPORT_SIZE;
 	vec3 normal = normalize_normal(texture(NORMAL_TEXTURE, uv).rgb);
 	
 	// edge lines
@@ -63,40 +67,29 @@ void fragment() {
 	
 	float edge = sqrt(pow(edge_x, 2.0)+pow(edge_y, 2.0));
 	
-	// working on posterize version of hatching
-	//vec3 hatch_tex = texture(hatch,uv * hatch_uv_scaling).rgb;
-	//float steps = 8.0;
-	//float posterize = 1.0 - (floor(uv.x * steps) / (steps - 1.0)); // posterize into 4 stepped levels
-	//float hatch_g = step(1.0,posterize) * hatch_tex.g;
-	//float hatch_r = step(0.5,posterize) * hatch_tex.r;
-	//float hatch_b = step(0.25,posterize) * hatch_tex.b;
-	//float hatch_color = max(max(hatch_r,hatch_g),hatch_b);
-	//
-	//screen_color = vec3(hatch_r,hatch_g,hatch_b);
-	
 	// hatching based on luminance
 	float luminance = dot(screen_color, vec3(0.299, 0.587, 0.114));
 	
+	luminance = (luminance - 0.5 + lum_offset) * lum_contrast + 0.5;
+	luminance = clamp(luminance, 0.0, 1.0);
+	
+	// add in different hatch textures at different luminance values
 	vec3 final_color = screen_color;
 	vec4 hatch_tex = texture(hatch,uv * hatch_uv_scaling);
 	if (luminance < 0.75) {
-		//final_color -= vec3(hatch_tex.g);
-		//final_color -= texture(hatch1,uv * hatch_uv_scaling).rgb;
+		final_color -= vec3(hatch_tex.g);
 	}
 	if (luminance < 0.5) {
-		//final_color -= vec3(hatch_tex.r);
-		//final_color -= texture(hatch2,uv * hatch_uv_scaling).rgb;
+		final_color -= vec3(hatch_tex.r);
 	}
 	if (luminance < 0.25) {
-		//final_color -= vec3(hatch_tex.b);
-		//final_color -= texture(hatch3,uv * hatch_uv_scaling).rgb;
+		final_color -= vec3(hatch_tex.b);
 	}
 	
 	// apply edge lines
 	if (edge > edge_threshold) {
 		ALBEDO = line_color;
 	} else {
-		//ALBEDO = vec3(luminance,luminance,luminance);
 		ALBEDO = final_color;
 	}
 }
