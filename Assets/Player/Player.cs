@@ -27,19 +27,8 @@ public partial class Player : CharacterBody3D
 		base._Ready();
 
 		PlayerInstance = this;
-
-		PrintAfterJump();
 		
 		Input.SetMouseMode(Input.MouseModeEnum.Captured);
-	}
-	
-	private async void PrintAfterJump()
-	{
-		while (true)
-		{
-			await ToSignal(this, SignalName.Jumped);
-			GD.Print("Jumped!");
-		}
 	}
 
 	public override void _UnhandledInput(InputEvent @event)

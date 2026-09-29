@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cme4gd2f72dwu" path="res://Assets/Player/Player.tscn" id="1_y8pdh"]
 [ext_resource type="PackedScene" uid="uid://ds0ewg7u8mge5" path="res://Assets/Keypad/Keypad.tscn" id="2_e65p0"]
 [ext_resource type="PackedScene" uid="uid://dwtdlevehlsm7" path="res://UI/MainHUD.tscn" id="3_aj1r1"]
+[ext_resource type="PackedScene" uid="uid://buiov0k0k6a15" path="res://Assets/Door/Door.tscn" id="4_fv6ia"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_y8pdh"]
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -73,6 +74,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ic43p")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/StaticBody3D" unique_id=1247583370]
 shape = SubResource("BoxShape3D_fv6ia")
 
+[node name="Box5" type="MeshInstance3D" parent="." unique_id=1358567002]
+transform = Transform3D(3.3917062, 0, 0, 0, 3.3917065, 0, 0, 0, 3.3917062, 9.152182, 0.5703788, -8.574701)
+mesh = SubResource("BoxMesh_336pp")
+surface_material_override/0 = SubResource("StandardMaterial3D_ic43p")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box5" unique_id=1511592527]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box5/StaticBody3D" unique_id=573304876]
+shape = SubResource("BoxShape3D_fv6ia")
+
 [node name="Box3" type="MeshInstance3D" parent="." unique_id=260992955]
 transform = Transform3D(3.3917062, 0, 0, 0, 3.3917065, 0, 0, 0, 3.3917062, 13.739351, -1.0098851, 5.1114616)
 mesh = SubResource("SphereMesh_gjdnp")
@@ -104,9 +115,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ixhfn")
 shape = SubResource("BoxShape3D_y8pdh")
 
 [node name="Player" parent="." unique_id=99370383 instance=ExtResource("1_y8pdh")]
-transform = Transform3D(-0.015009241, 0, 0.99988735, 0, 1, 0, -0.99988735, 0, -0.015009241, 6.148699, 0.19989157, 0.49515843)
+transform = Transform3D(-0.015009241, 0, 0.99988735, 0, 1, 0, -0.99988735, 0, -0.015009241, 14.749016, 0.19989157, -3.7781932)
 
-[node name="Keypad" parent="." unique_id=1237414122 instance=ExtResource("2_e65p0")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.813388, 0.52736443, -3.8265483)
+[node name="Keypad" parent="." unique_id=1237414122 node_paths=PackedStringArray("ActivateObject") instance=ExtResource("2_e65p0")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.813388, 0.52736443, -5.0471125)
+ActivateObject = NodePath("../Door")
 
 [node name="MainHud" parent="." unique_id=247329022 instance=ExtResource("3_aj1r1")]
+
+[node name="Door" parent="." unique_id=35669076 instance=ExtResource("4_fv6ia")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.744795, -1.1041247, -5.464423)

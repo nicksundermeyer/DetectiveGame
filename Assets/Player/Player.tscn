@@ -15,6 +15,7 @@ shader = ExtResource("2_q3lat")
 shader_parameter/hatch = ExtResource("3_tok1r")
 shader_parameter/hatch_uv_scaling = 50.0
 shader_parameter/edge_threshold = 0.1
+shader_parameter/edge_thickness = 0.7
 shader_parameter/line_color = Color(0, 0, 0, 1)
 shader_parameter/lum_contrast = 5.0
 shader_parameter/lum_offset = 0.47999998927104

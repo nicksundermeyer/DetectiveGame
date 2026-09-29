@@ -1,21 +1,25 @@
 using Godot;
 using System;
 using System.Collections;
-using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Godot.Collections;
 
 [GlobalClass]
 public partial class Keypad : Interactable
 {
+	[Export] public int Code = 1234;
+	[Export] public Interactable ActivateObject;
+	
+	[ExportGroup("Advanced")]
 	[Export] public Camera3D Camera;
 	[Export] public Node3D KeypadMeshes;
+	[Export] public Label3D ScreenText;
 	[Export] public PackedScene KeypadUi;
 	[Export] public Curve ButtonPressCurve;
 	[Export] public float CameraBlendDuration = 0.5f;
 
 	private Array<Node> buttonMeshes = [];
-	private IEnumerator pressButtonTask;
 	private bool bUsingKeypad = false;
 	private Control keypadUiInstance;
 	
@@ -30,22 +34,9 @@ public partial class Keypad : Interactable
 			}
 		}
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (pressButtonTask != null)
-		{
-			bool keepGoing = pressButtonTask.MoveNext();
-			if (!keepGoing)
-			{
-				pressButtonTask = null;
-			}
-		}
-	}
 	
 	// Called when any input event occurs (UI, mouse, keyboard, etc.)
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
 		if (bUsingKeypad)
 		{
@@ -71,10 +62,7 @@ public partial class Keypad : Interactable
 					var hitCollider = (Node3D)result["collider"];
 					if (buttonMeshes.Contains(hitCollider.GetParent()))
 					{
-						if (pressButtonTask == null)
-						{
-							pressButtonTask = PressButton(buttonMeshes.IndexOf(hitCollider.GetParent()));
-						}
+						_ = PressButton(buttonMeshes.IndexOf(hitCollider.GetParent()));
 					}
 				}
 				
@@ -91,8 +79,40 @@ public partial class Keypad : Interactable
 		EnterKeypad();
 	}
 	
-	private IEnumerator PressButton(int buttonIndex)
+	private async Task PressButton(int buttonIndex)
 	{
+		bool bFailure = false;
+		bool bSuccess = false;
+		if (buttonIndex == 10)
+		{
+			// Clear button
+			ScreenText.SetText("");
+			ScreenText.Modulate = Colors.White;
+		}
+		else if (buttonIndex == 11)
+		{
+			// Submit button
+			if (ScreenText.GetText() == Code.ToString())
+			{
+				ScreenText.Modulate = Colors.Green;
+				bSuccess = true;
+			}
+			else
+			{
+				bFailure = true;
+				ScreenText.Modulate = Colors.Red;
+			}
+		}
+		else
+		{
+			// Type text into screen, clamped to password length
+			if (ScreenText.GetText().Length < 4)
+			{
+				ScreenText.SetText(ScreenText.GetText() + buttonIndex);
+			}
+		}
+		
+		// Move button
 		float dt = (float)GetProcessDeltaTime();
 		float moveTime = 0.2f;
 		float moveDistance = 0.01f;
@@ -103,7 +123,28 @@ public partial class Keypad : Interactable
 		{
 			Vector3 targetPosition = new Vector3(start.X, start.Y, start.Z - ButtonPressCurve.Sample(i)*moveDistance);
 			buttonMesh.SetPosition(targetPosition);
-			yield return null;
+			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		}
+
+		// Wait a moment and then clear or exit the text if needed
+		if (bFailure || bSuccess)
+		{
+			await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+		}
+
+		if (bFailure)
+		{
+			ScreenText.SetText("");
+			ScreenText.Modulate = Colors.White;
+		}
+
+		if (bSuccess)
+		{
+			ExitKeypad();
+			if (ActivateObject != null)
+			{
+				ActivateObject.Interact();
+			}
 		}
 	}
 
@@ -120,7 +161,6 @@ public partial class Keypad : Interactable
 		keypadUiInstance = KeypadUi.Instantiate<Control>();
 		AddChild(keypadUiInstance);
 		Button exitButton = (Button)keypadUiInstance.FindChild("ExitButton");
-		GD.Print(exitButton.Name);
 		exitButton.Pressed += ExitKeypad;
 		bUsingKeypad = true;
 		Input.SetMouseMode(Input.MouseModeEnum.Visible);

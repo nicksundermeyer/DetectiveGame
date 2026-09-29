@@ -5,16 +5,26 @@
 [ext_resource type="PackedScene" uid="uid://eoumierj5y0c" path="res://Models/Keypad/Keypad.fbx" id="15_cwx6j"]
 
 [sub_resource type="Curve" id="Curve_unyhs"]
-_data = [Vector2(0, 0), 0.0, 2.3717082, 0, 0, Vector2(0.5012964, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8734362, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 2.3717082, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SystemFont" id="SystemFont_ooskd"]
+font_names = PackedStringArray("Sans-Serif")
+font_weight = 600
+subpixel_positioning = 0
+
+[sub_resource type="FontVariation" id="FontVariation_alaja"]
+base_font = SubResource("SystemFont_ooskd")
+spacing_glyph = 51
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gjdnp"]
 size = Vector3(0.32659912, 0.5286865, 0.06555176)
 
-[node name="Keypad" type="Area3D" unique_id=1737249742 node_paths=PackedStringArray("Camera", "KeypadMeshes")]
+[node name="Keypad" type="Area3D" unique_id=1737249742 node_paths=PackedStringArray("Camera", "KeypadMeshes", "ScreenText")]
 script = ExtResource("1_hx506")
 Camera = NodePath("Camera3D")
 KeypadMeshes = NodePath("KeypadMesh")
+ScreenText = NodePath("KeypadMesh/ScreenText")
 KeypadUi = ExtResource("2_unyhs")
 ButtonPressCurve = SubResource("Curve_unyhs")
 metadata/_custom_type_script = "uid://dpmpdilfjkcyt"
@@ -23,6 +33,12 @@ metadata/_custom_type_script = "uid://dpmpdilfjkcyt"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5351548)
 
 [node name="KeypadMesh" parent="." unique_id=1254638695 instance=ExtResource("15_cwx6j")]
+
+[node name="ScreenText" type="Label3D" parent="KeypadMesh" unique_id=1497921112]
+transform = Transform3D(0.112, 0, 0, 0, 0.112, 0, 0, 0, 0.112, 0, 0.20427355, 0.09005761)
+font = SubResource("FontVariation_alaja")
+font_size = 84
+outline_size = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1665899972]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0018615723, 0.0040893555, 0.0602417)
